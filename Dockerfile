@@ -30,6 +30,7 @@ ENV S3_ENDPOINT **None**
 ENV S3_S3V4 no
 ENV SCHEDULE **None**
 ENV ENCRYPTION_PASSWORD **None**
+ENV REMOVE_BEFORE ''
 
 ADD run.sh /scripts/run.sh
 ADD backup.sh /scripts/backup.sh
