@@ -119,10 +119,20 @@ if [ -n "$REMOVE_BEFORE" ]; then
   backups_query="Contents[?LastModified<='${date_from_remove} 00:00:00'].{Key: Key}"
 
   echo "Removing old backups from $S3_BUCKET..."
-  aws $AWS_ARGS s3api list-objects \
-    --bucket "${S3_BUCKET}" \
-    --query "${backups_query}" \
-    --output text \
-    | xargs -n1 -t -I 'KEY' aws $AWS_ARGS s3 rm s3://"${S3_BUCKET}"/'KEY'
+  if [ $S3_PREFIX = '/' ]; then
+        aws $AWS_ARGS s3api list-objects \
+          --bucket "${S3_BUCKET}" \
+          --query "${backups_query}" \
+          --output text \
+          | xargs -n1 -t -I 'KEY' aws $AWS_ARGS s3 rm s3://"${S3_BUCKET}"/'KEY'
+          else
+            aws $AWS_ARGS s3api list-objects \
+              --bucket "${S3_BUCKET}" \
+              --prefix "${S3_PREFIX}" \
+              --query "${backups_query}" \
+              --output text \
+              | xargs -n1 -t -I 'KEY' aws $AWS_ARGS s3 rm s3://"${S3_BUCKET}"/'KEY'
+  fi
+
   echo "Removal complete."
 fi
