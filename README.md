@@ -31,6 +31,7 @@ pgbackups3:
   links:
     - postgres
   environment:
+    REMOVE_BEFORE: 30 //optional
     SCHEDULE: '@daily'
     S3_REGION: region
     S3_ACCESS_KEY_ID: key
@@ -64,6 +65,10 @@ An Endpoint is the URL of the entry point for an AWS web service or S3 Compitabl
 You can specify an alternate endpoint by setting `S3_ENDPOINT` environment variable like `protocol://endpoint`
 
 **Note:** S3 Compitable Storage Provider requires `S3_ENDPOINT` environment variable
+
+## Automatic Cleanup
+
+You can remove old backups by setting the `REMOVE_BEFORE` environment for example if you pass 30 it will remove files older than 30 days old.
 
 ### Encryption
 
