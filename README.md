@@ -1,13 +1,13 @@
 # pg-backup-s3
-a docker image to back up postgres into the S3 compatible storage
+a docker image to back up Postgres into the S3-compatible storage
 
 this repo is based on [schickling/dockerfiles](https://github.com/schickling/dockerfiles/tree/master/postgres-backup-s3).
 
-the difference here is that we use ubuntu as base image and because of that we can add official repository of postgresql and get more updatged version of postgresql.
+the difference here is that we use Ubuntu as a base image and because of that we can add an official repository of Postgresql and get a more updated version of Postgresql.
 
-right now this image uses `postgresql-client-15` that supports version 10-15 of postgresql.
+this image currently uses `postgresql-client-16` that supports versions 11-16 of PostgreSQL.
 
-if you need older postgresql you need to manually change the docker file and build the image with compatible client.
+if you need older Postgresql you need to manually change the docker file and build the image with the compatible client.
 
 ## Usage
 
