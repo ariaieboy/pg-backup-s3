@@ -10,7 +10,7 @@ RUN sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt jammy-pgdg main" > 
 RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 
 RUN apt-get update
-RUN apt-get -yq install postgresql-client-15 openssl awscli
+RUN apt-get -yq install postgresql-client-16 openssl awscli
 
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
