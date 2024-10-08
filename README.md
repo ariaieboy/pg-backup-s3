@@ -5,7 +5,7 @@ this repo is based on [schickling/dockerfiles](https://github.com/schickling/doc
 
 the difference here is that we use Ubuntu as a base image and because of that we can add an official repository of Postgresql and get a more updated version of Postgresql.
 
-this image currently uses `postgresql-client-16` that supports versions 11-16 of PostgreSQL.
+this image currently uses `postgresql-client-17` that supports versions 12-17 of PostgreSQL.
 
 if you need older Postgresql you need to manually change the docker file and build the image with the compatible client.
 
