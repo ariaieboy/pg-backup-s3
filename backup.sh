@@ -1,27 +1,27 @@
-#! /bin/sh
+#!/bin/bash
 
-if [ "${S3_ACCESS_KEY_ID}" = "**None**" ]; then
+if [[ "$S3_ACCESS_KEY_ID" == "**None**" ]]; then
   echo "You need to set the S3_ACCESS_KEY_ID environment variable."
   exit 1
 fi
 
-if [ "${S3_SECRET_ACCESS_KEY}" = "**None**" ]; then
+if [[ "$S3_SECRET_ACCESS_KEY" == "**None**" ]]; then
   echo "You need to set the S3_SECRET_ACCESS_KEY environment variable."
   exit 1
 fi
 
-if [ "${S3_BUCKET}" = "**None**" ]; then
+if [[ "$S3_BUCKET" == "**None**" ]]; then
   echo "You need to set the S3_BUCKET environment variable."
   exit 1
 fi
 
-if [ "${POSTGRES_DATABASE}" = "**None**" -a "${POSTGRES_BACKUP_ALL}" != "true" ]; then
+if [[ "$POSTGRES_DATABASE" == "**None**" && "$POSTGRES_BACKUP_ALL" != "true" ]]; then
   echo "You need to set the POSTGRES_DATABASE environment variable."
   exit 1
 fi
 
-if [ "${POSTGRES_HOST}" = "**None**" ]; then
-  if [ -n "${POSTGRES_PORT_5432_TCP_ADDR}" ]; then
+if [[ "$POSTGRES_HOST" == "**None**" ]]; then
+  if [[ -n "$POSTGRES_PORT_5432_TCP_ADDR" ]]; then
     POSTGRES_HOST=$POSTGRES_PORT_5432_TCP_ADDR
     POSTGRES_PORT=$POSTGRES_PORT_5432_TCP_PORT
   else
@@ -30,17 +30,17 @@ if [ "${POSTGRES_HOST}" = "**None**" ]; then
   fi
 fi
 
-if [ "${POSTGRES_USER}" = "**None**" ]; then
+if [[ "$POSTGRES_USER" == "**None**" ]]; then
   echo "You need to set the POSTGRES_USER environment variable."
   exit 1
 fi
 
-if [ "${POSTGRES_PASSWORD}" = "**None**" ]; then
+if [[ "$POSTGRES_PASSWORD" == "**None**" ]]; then
   echo "You need to set the POSTGRES_PASSWORD environment variable or link to a container named POSTGRES."
   exit 1
 fi
 
-if [ "${S3_ENDPOINT}" == "**None**" ]; then
+if [[ "$S3_ENDPOINT" == "**None**" ]]; then
   AWS_ARGS=""
 else
   AWS_ARGS="--endpoint-url ${S3_ENDPOINT}"
@@ -60,14 +60,14 @@ else
   S3_PREFIX="/${S3_PREFIX}/"
 fi
 
-if [ "${POSTGRES_BACKUP_ALL}" == "true" ]; then
+if [[ "$POSTGRES_BACKUP_ALL" == "true" ]]; then
   SRC_FILE=dump.sql.gz
   DEST_FILE=all_$(date +"%Y-%m-%dT%H:%M:%SZ").sql.gz
 
   echo "Creating dump of all databases from ${POSTGRES_HOST}..."
   pg_dumpall -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER | gzip > $SRC_FILE
 
-  if [ "${ENCRYPTION_PASSWORD}" != "**None**" ]; then
+  if [[ "$ENCRYPTION_PASSWORD" != "**None**" ]]; then
     echo "Encrypting ${SRC_FILE}"
     openssl enc -aes-256-cbc -in $SRC_FILE -out ${SRC_FILE}.enc -k $ENCRYPTION_PASSWORD
     if [ $? != 0 ]; then
@@ -119,7 +119,7 @@ if [ -n "$REMOVE_BEFORE" ]; then
   backups_query="Contents[?LastModified<='${date_from_remove} 00:00:00'].{Key: Key}"
 
   echo "Removing old backups from $S3_BUCKET..."
-  if [ $S3_PREFIX = '/' ]; then
+  if [[ $S3_PREFIX == '/' ]]; then
         aws $AWS_ARGS s3api list-objects \
           --bucket "${S3_BUCKET}" \
           --query "${backups_query}" \
