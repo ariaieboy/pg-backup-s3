@@ -37,4 +37,4 @@ ADD backup.sh /scripts/backup.sh
 
 
 ENTRYPOINT []
-CMD ["sh", "/scripts/run.sh"]
+CMD ["bash", "/scripts/run.sh"]
