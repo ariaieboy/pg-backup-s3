@@ -1,6 +1,6 @@
 FROM webdevops/go-crond:master-ubuntu
-LABEL maintainer="AriaieBOY <smr.seddighy@gmail.com>"
-ENV DEBIAN_FRONTEND noninteractive
+LABEL maintainer="AriaieBOY <ariaieboy.ir@gmail.com>"
+ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=UTC
 
 RUN apt-get update
